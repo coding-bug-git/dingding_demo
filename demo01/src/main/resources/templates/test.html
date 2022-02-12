@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<h1>hello</h1>
+<div class="url">
+  url: <span></span>
+</div>
+<div class="rst">
+
+</div>
+
+<div class="response">
+  response: <pre></pre>
+</div>
+<script src="/static/js/dingtalk.open.js"></script>
+<script src="/static/js/axios.min.js"></script>
+<script>
+
+  dd.ready(async function () {
+    const url = window.location.href;
+    const urlEle = document.querySelector('.url');
+    const corpid = getQueryString('corpid');
+
+    urlEle.querySelector('span').textContent = corpid
+    if (corpid != null || corpid !== '' || corpid !== undefined) {
+      // 获取免登 code
+      const code = await dd.runtime.permission.requestAuthCode({ corpId: corpid, });
+      const rstEle = document.querySelector('.rst');
+      rstEle.textContent = JSON.stringify(code);
+
+      // 调用后台接口
+      axios.post('/dingLogin?code=' + code.code)
+        .then(function (response) {
+          console.log(response);
+          const responseEle = document.querySelector('.response');
+
+          responseEle.querySelector('pre').textContent = JSON.stringify(response,null,"\t")
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+
+    } else {
+      throw 'corpid is null';
+    }
+  });
+
+  function getQueryString(name) {
+    let reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+    let r = window.location.search.substr(1).match(reg);
+    if (r != null) {
+      return decodeURIComponent(r[2]);
+    }
+    return null;
+  }
+</script>
+</body>
+</html>

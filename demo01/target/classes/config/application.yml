@@ -1,0 +1,14 @@
+# 开发环境配置
+server:
+  # 服务器的HTTP端口，默认为8080
+  port: 9123
+  servlet:
+    # 应用的访问路径
+    context-path: /
+spring:
+  thymeleaf:
+    cache: false
+    mode: html
+#    prefix: classpath:/templates/
+  mvc:
+    static-path-pattern: /static/**
