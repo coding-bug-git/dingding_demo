@@ -24,7 +24,6 @@ hs_err_pid*
 /.idea/*
 /.idea/
 **/target/
-**/dist/
+**/node_modules/
 
 #/src/main/resources/static/
-/02proxy_web/node_modules/
